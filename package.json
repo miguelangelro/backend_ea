@@ -1,7 +1,7 @@
 {
   "name": "backend_ea",
   "version": "1.0.0",
-  "description": "Here is the main backend project from our web application.",
+  "description": "Gymder app backend",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
