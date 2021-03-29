@@ -10,9 +10,9 @@ We will be using the following git branches:
 - Develop
 - Features
 
-![Gitflow](https://www.google.com/url?sa=i&url=https%3A%2F%2Fdeveloppaper.com%2Ftalk-about-git-series-5-git-workflow-3-gitflow-workflow%2F&psig=AOvVaw3k7Csj9lfDcOmCxO7ah6LU&ust=1617096701836000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCLjC-PCY1e8CFQAAAAAdAAAAABAD)
+![Gitflow](https://imgs.developpaper.com/imgs/3885419426-5e1577c8a1a26_articlex.png)
 
-To install the project:
+# Install
 
 1. git clone https://github.com/miguelangelro/backend_ea.git
 2. cd backend_ea
