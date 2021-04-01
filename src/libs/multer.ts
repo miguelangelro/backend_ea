@@ -2,7 +2,7 @@ import multer from 'multer'
 import path from 'path'
 import {v4 as uuid} from 'uuid';
 
-// Settings
+// Settings para renombrar el nombre de un fichero
 const storage = multer.diskStorage({
     destination: 'uploads',
     filename: (req, file, cb) => {

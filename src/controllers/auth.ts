@@ -5,13 +5,15 @@ import jwt from 'jsonwebtoken';
 
 export const signup = async (req: Request,res: Response) => { 
     console.log(req.body);
-    const {name, surname, email, password} = req.body;
+    const {name, surname, username, email, password, photos} = req.body;
 
     const user: IUser = new User ({
         name, 
         surname,
+        username,
         email,
         password,
+        photos: []
     });
 
   user.password = await user.encryptPassword(user.password);

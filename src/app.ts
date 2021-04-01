@@ -3,7 +3,9 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import authRoutes from './routes/auth'
-
+import path from 'path'
+import userRoutes from './routes/userRoutes'
+import photoRoutes from './routes/photoRoutes'
 
 const app: Application = express();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRoutes);
-
+app.use('/user', userRoutes);
+app.use('/photo', photoRoutes);
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 export default app;
