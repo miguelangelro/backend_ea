@@ -22,9 +22,8 @@ export async function createPhoto(req: Request, res: Response): Promise<Response
     });
   
     const savedPhoto = await newPhoto.save();
-    console.log(savedPhoto)
 
-    await User.findOneAndUpdate({_id: req.userId},{$push: {photos: savedPhoto._id}});
+    await User.findOneAndUpdate({_id: req.userId},{$push: {photos: savedPhoto}});
    
     return res.status(200).json({
         message: 'Photo Saved Successfully',
