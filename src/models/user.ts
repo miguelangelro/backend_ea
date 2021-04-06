@@ -39,7 +39,7 @@ const userSchema = new Schema({
     },
     photos: [
         {
-            type: Object,
+            type: Schema.Types.ObjectId,
             ref: 'Photo'
         },
     ],
