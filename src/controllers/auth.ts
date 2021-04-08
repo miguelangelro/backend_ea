@@ -25,17 +25,32 @@ export const signup = async (req: Request,res: Response) => {
   
 };
 
-export const signin = async (req: Request,res: Response) => {
- const user = await User.findOne({email: req.body.email});// finding user by email
+export const signin = async (req: Request, res: Response) => {
+  const user = await User.findOne({ email: req.body.email }); // finding user by email
 
- if(!user) return res.status(400).json("Error, try again.");
-   const correctPassword: boolean =await user.validatePassword(req.body.password);
+  if (!user) return res.status(400).json({
+    ok: false,
+    mensaje: "Error, try again."
+  });
+  const correctPassword: boolean = await user.validatePassword(
+    req.body.password
+  );
 
-   if(!correctPassword) return res.status(404).json('invalid Password');
-   //generate token
-   const token: string =jwt.sign({_id: user._id},process.env.TOKEN_SECRET || 'tokenTEST', {expiresIn: 86400}  ) // expires in a day
-   
-  return res.header('auth-token', token).json(user);   
+  if (!correctPassword) return res.status(404).json({
+    ok: false,
+    mensaje: "invalid Password"
+  });
+  //generate token
+  const token: string = jwt.sign(
+    { _id: user._id, username: user.username, email: user.email },
+    process.env.TOKEN_SECRET || "tokenTEST",
+    { expiresIn: 86400 }
+  ); // expires in a day
+
+  return res.status(200).json({
+    ok: true,
+    token: token,
+  });
 };
 
 export const profile = async (req: Request,res: Response) => {
