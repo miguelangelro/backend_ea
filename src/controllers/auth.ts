@@ -5,13 +5,14 @@ import jwt from 'jsonwebtoken';
 
 export const signup = async (req: Request,res: Response) => { 
     console.log(req.body);
-    const {name, surname, username, email, password, photos} = req.body;
+    const {name, surname, username, email, role, password, photos} = req.body;
 
     const user: IUser = new User ({
         name, 
         surname,
         username,
         email,
+        role,
         password,
         photos: []
     });
@@ -20,8 +21,13 @@ export const signup = async (req: Request,res: Response) => {
   const savedUser = await user.save ();
 
  // generating token
-  const token: string = jwt.sign({_id: savedUser._id}, process.env.TOKEN_SECRET || 'tokenTEST') // data to be stored, secret key
-  return res.header('auth-token', token).json(savedUser); // returning the token value in the header and the user data in the payload.
+  const token: string = jwt.sign({_id: savedUser._id,username: user.username, email: user.email }
+  ,process.env.TOKEN_SECRET || 'tokenTEST') // data to be stored, secret key
+  return res.status(200).json({
+    ok: true,
+    token: token,
+    user: savedUser
+  });
   
 };
 

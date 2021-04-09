@@ -8,6 +8,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     photos: Array<IPhoto>;
+    role: number;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -35,6 +36,10 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
+        required: true
+    },
+    role: {
+        type: Number, // 0 user, 1 admin
         required: true
     },
     photos: [
