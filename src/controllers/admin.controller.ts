@@ -7,7 +7,7 @@ export const getUsers = async (req:Request, res:Response) => {
     if(users==null) return res.status(404).json({message: "Users not found"});
     else return res.status(200).json(users);
     }catch(err){
-        res.json({
+        res.status(400).json({
             ok: false,
             error: err
         })
@@ -24,7 +24,7 @@ export const getUser = async (req:Request, res:Response) => {
         user: user
     });
     }catch(err){
-        res.json({
+        res.status(400).json({
             ok: false,
             error: err
         })
@@ -34,7 +34,7 @@ export const getUser = async (req:Request, res:Response) => {
 
 export const createUser = async (req:Request, res:Response) => {
     try{
-        const {name, surname, username, email, password} = req.body;
+        const {name, surname, username,role, email, password} = req.body;
         const checkEmail = await User.findOne({email: email});
         if(checkEmail != null) return res.status(400).json({
             ok: false,
@@ -46,6 +46,7 @@ export const createUser = async (req:Request, res:Response) => {
         surname,
         username,
         email,
+        role,
         password,
         photos: []
     });
@@ -57,7 +58,7 @@ export const createUser = async (req:Request, res:Response) => {
         user: savedUser
     })
     }catch(err){
-        res.json({
+        res.status(400).json({
             ok: false,
             error: err
         })
@@ -67,16 +68,16 @@ export const createUser = async (req:Request, res:Response) => {
 
 export const updateUser = async (req:Request, res:Response) => {
     try{
-        const {name, surname, username, email} = req.body;
+        const {name, surname, username, role, email} = req.body;
         const userUpdated = await User.findByIdAndUpdate(req.params.id,{$set: {name: name, surname:surname, username: username,
-        email: email}},{new:true});
+        role: role,email: email}},{new:true});
         if(userUpdated==null) return res.status(404).json({message: "User not found"});
         else return res.status(200).json({
         ok: true,
-        user: userUpdated
+        userUpdated: userUpdated
     });
 }catch(err){
-        res.json({
+        res.status(400).json({
             ok: false,
             error: err
         })
@@ -90,10 +91,10 @@ export const deleteUser = async (req:Request, res:Response) => {
         if(userDeleted==null) return res.status(404).json({message: "User not found"});
         else return res.status(200).json({
         ok: true,
-        user: userDeleted
+        userDeleted: userDeleted
     });
 }catch(err){
-        res.json({
+        res.status(400).json({
             ok: false,
             error: err
         })
