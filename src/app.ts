@@ -2,11 +2,12 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import authRoutes from './routes/auth'
+import authRoutes from './routes/auth.routes'
 import path from 'path'
 import userRoutes from './routes/userRoutes'
-import photoRoutes from './routes/photoRoutes'
-import adminRoutes from './routes/adminRoutes'
+import photoRoutes from './routes/photo.routes'
+import adminRoutes from './routes/admin.routes'
+import postRoutes from './routes/post.routes'
 const app: Application = express();
 
 // settings
@@ -21,7 +22,8 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
-app.use('/photo', photoRoutes);
+//app.use('/photo', photoRoutes);
+app.use('/post', postRoutes);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 export default app;

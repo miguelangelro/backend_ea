@@ -1,3 +1,4 @@
+import { IPost } from './post';
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcryptjs';
 import { IPhoto } from './photo';
@@ -9,6 +10,7 @@ export interface IUser extends Document {
     password: string;
     photos: Array<IPhoto>;
     role: number;
+    posts: Array<IPost>
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -48,6 +50,12 @@ const userSchema = new Schema({
             ref: 'Photo'
         },
     ],
+    posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ]
 },
 {
     versionKey: false,
