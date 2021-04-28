@@ -15,9 +15,7 @@ export async function createPhoto(req: Request, res: Response): Promise<Response
     const { title, description } = req.body;
     
     const newPhoto: IPhoto = new Photo ({
-        title, 
         user: req.userId,
-        description,
         path: req.file.path
     });
   
