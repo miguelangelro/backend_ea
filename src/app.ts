@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import authRoutes from './routes/auth.routes'
 import path from 'path'
-import userRoutes from './routes/userRoutes'
+import userRoutes from './routes/user.routes'
 import photoRoutes from './routes/photo.routes'
 import adminRoutes from './routes/admin.routes'
 import postRoutes from './routes/post.routes'
