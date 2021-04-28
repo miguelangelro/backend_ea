@@ -7,6 +7,7 @@ import path from 'path'
 import userRoutes from './routes/userRoutes'
 import photoRoutes from './routes/photoRoutes'
 import adminRoutes from './routes/adminRoutes'
+import coachRoutes from './routes/coachRoutes'
 const app: Application = express();
 
 // settings
@@ -22,6 +23,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/photo', photoRoutes);
+app.use('/coach', coachRoutes )
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 export default app;
