@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { read } from "fs-extra";
 import User from "../models/user";
 
 
@@ -41,3 +42,16 @@ export const deleteUser = async (req:Request,res:Response) => {
     
 }
 
+export const getCoaches = async (req:Request, res:Response) => {
+    const coaches = await User.findOne({"rol":2},{password: 0, email: 0})
+    if(coaches==null) 
+    return res.status(404).json({message: "User not found"});
+    else return res.status(200).json(coaches);
+}
+
+export const getCoach = async (req:Request, res:Response) => {
+    const coach = await User.findOne({"rol":2 , "username": req.params.username},{password:0, email:0} )
+    if (coach== null)
+    return res.status(404).json({message: "Coach not found"});
+    else return res.status(200).json(coach);
+}

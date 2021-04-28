@@ -10,11 +10,7 @@ export interface IUser extends Document {
     password: string;
     photos: Array<IPhoto>;
     role: number;
-<<<<<<< HEAD
     
-=======
-    posts: Array<IPost>
->>>>>>> aeafe30d1e7839ae894ebf3869bf0b39801dc9a3
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -45,11 +41,7 @@ const userSchema = new Schema({
         required: true
     },
     role: {
-<<<<<<< HEAD
         type: Number, // 0 user, 1 admin, 2 entrandor 
-=======
-        type: Number, // 0 user, 1 admin, 2 coach
->>>>>>> aeafe30d1e7839ae894ebf3869bf0b39801dc9a3
         required: true
     },
     photos: [
