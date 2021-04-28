@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { read } from "fs-extra";
 import User from "../models/user";
+import Sala from "../models/sala";
+import { getUsers } from "./admin.controller";
 
 
 export const getAllUsers = async (req:Request, res:Response) => {
@@ -55,3 +57,22 @@ export const getCoach = async (req:Request, res:Response) => {
     return res.status(404).json({message: "Coach not found"});
     else return res.status(200).json(coach);
 }
+
+
+export const getSalas = async (req:Request, res:Response) => {
+    const salas = await Sala.find({},{password:0});
+    if (salas==null)
+    return res.status(404).json({message: "Sala not found"});
+    else return res.status(200).json(salas);
+}
+
+export const getCoachSala = async (req: Request, res: Response) => {
+    const sala = await Sala.findOne({"name":req.params.name},{password:0, email:0})
+    const idCoach = sala?.admin._id
+    const coachSala = await User.findOne({"_id":idCoach},{password:0, email:0})
+    if (coachSala == null)
+    return res.status(404).json({message:"No se encontro el coach de la sala"});
+
+    return res.status(200).json(coachSala)
+}
+

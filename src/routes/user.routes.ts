@@ -1,7 +1,7 @@
 import app from "app";
 import {Router} from "express"; 
 import { token } from "morgan";
-import {getAllUsers, getUser, updatePassword, deleteUser, getCoaches, getCoach} from '../controllers/user.controller'
+import {getAllUsers, getUser, updatePassword, deleteUser, getCoaches, getCoach, getSalas, getCoachSala} from '../controllers/user.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
 
 const router = Router();
@@ -13,6 +13,9 @@ router.put('/update', TokenValidation, updatePassword) //Esta bien, pero igual e
 router.delete('/:username',TokenValidation, deleteUser);
 router.get('/coaches', TokenValidation, getCoaches);
 router.get('/:usernameCoach', TokenValidation,getCoach);
+router.get('/salas',TokenValidation,getSalas); 
+router.get('/:nameSala', TokenValidation, getCoachSala); // --> dando el nombre de la sala te de el nombre del coach
+
 
 
 
