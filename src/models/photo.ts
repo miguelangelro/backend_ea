@@ -2,14 +2,10 @@ import { Schema, model, Document } from 'mongoose'
 import { IUser } from './user';
 
 const schema = new Schema({
-    title:{
-        type: String
-    },
    user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    description:{ type: String},
     path: { type: String}
 },{
     versionKey: false,
@@ -17,9 +13,8 @@ const schema = new Schema({
 });
 
 export interface IPhoto extends Document {
-    title: string;
+
     user: IUser;
-    description: string;
     path: string;
 }
 

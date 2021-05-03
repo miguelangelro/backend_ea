@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 
-import { signup, signin, profile } from '../controllers/auth'
+import { signup, signin, profile } from '../controllers/auth.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
 
 router.post('/signup', signup);
