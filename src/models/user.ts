@@ -9,6 +9,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     photos: Array<IPhoto>;
+    avatar: string;
     role: number;
     posts: Array<IPost>
     encryptPassword(password: string): Promise<string>;
@@ -18,11 +19,11 @@ export interface IUser extends Document {
 const userSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     surname: {
         type: String,
-        required: true
+        required: false
     },
     username: {
         type: String,
@@ -39,6 +40,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    avatar: {
+        type: String,
+        default: 'av-1.png'
     },
     role: {
         type: Number, // 0 user, 1 admin, 2 coach
