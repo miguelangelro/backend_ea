@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 
 
 export const signup = async (req: Request,res: Response) => { 
-    console.log(req.body);
+  try{    
+  console.log(req.body);
     const {name, surname, username, email, role, password, photos} = req.body;
 
     const user: IUser = new User ({
@@ -22,12 +23,19 @@ export const signup = async (req: Request,res: Response) => {
 
  // generating token
   const token: string = jwt.sign({_id: savedUser._id,username: user.username, email: user.email }
-  ,process.env.TOKEN_SECRET || 'tokenTEST') // data to be stored, secret key
+  ,process.env.TOKEN_SECRET || 'tokenTEST',  { expiresIn: 86400 })  // data to be stored, secret key
   return res.status(200).json({
     ok: true,
     token: token,
     user: savedUser
   });
+
+}catch(err){
+  res.status(400).json({
+      ok: false,
+      error: err
+  })
+}
   
 };
 
