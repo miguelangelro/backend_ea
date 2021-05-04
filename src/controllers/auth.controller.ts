@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export const signup = async (req: Request,res: Response) => { 
   try{    
   console.log(req.body);
-    const {name, surname, username, email, role, password, photos} = req.body;
+    const {name, surname, username, email, role, avatar, password, photos} = req.body;
 
     const user: IUser = new User ({
         name, 
@@ -14,6 +14,7 @@ export const signup = async (req: Request,res: Response) => {
         username,
         email,
         role,
+        avatar,
         password,
         photos: []
     });
