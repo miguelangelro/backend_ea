@@ -8,6 +8,7 @@ import userRoutes from './routes/user.routes'
 import photoRoutes from './routes/photo.routes'
 import adminRoutes from './routes/admin.routes'
 import postRoutes from './routes/post.routes'
+import salaRoutes from './routes/salas.routes'
 const app: Application = express();
 
 // settings
@@ -24,6 +25,7 @@ app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 //app.use('/photo', photoRoutes);
 app.use('/post', postRoutes);
+app.use('/sala', salaRoutes);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 export default app;

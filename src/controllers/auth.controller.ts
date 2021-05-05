@@ -75,3 +75,23 @@ export const profile = async (req: Request,res: Response) => {
     return res.json(user); 
    
 }
+
+
+export const getMe = async (req: Request,res: Response) => { 
+  try{    
+  const userMe = await User.findById(req.userId);
+
+ // generating token
+  return res.status(200).json({
+    ok: true,
+    user: userMe
+  });
+
+}catch(err){
+  res.status(400).json({
+      ok: false,
+      error: err
+  })
+}
+  
+};

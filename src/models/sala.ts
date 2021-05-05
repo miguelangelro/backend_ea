@@ -5,7 +5,12 @@ import { IUser } from './user';
 
 
 export interface ISala extends Document {
-    
+    name: string;
+    actividad: string;
+    admin: IUser;
+    horario: string;
+    maxInscritos: number;
+    inscritos: Array<IUser>;
 };
 
 const schema = new Schema({
