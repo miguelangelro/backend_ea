@@ -1,6 +1,7 @@
+import { updateUser } from './admin.controller';
 import { Request, Response } from "express";
 import Sala, { ISala } from './../models/sala';
-import { IUser } from './../models/user';
+import User,{ IUser } from './../models/user';
 
 
 export const createSala = async (req: Request,res: Response) => { 
@@ -17,6 +18,7 @@ export const createSala = async (req: Request,res: Response) => {
     });
 
     const savedSala = await sala.save ();
+    await User.findByIdAndUpdate(req.userId,{$push: {salas: savedSala._id }})
     res.status(200).json({
         ok: true,
         sala: savedSala
@@ -32,12 +34,20 @@ export const createSala = async (req: Request,res: Response) => {
 export const getSalas = async (req:Request, res:Response) => {
     try{
     const salas = await Sala.find({});
-    if(salas==null) return res.status(400).json({
+    if(salas.length == 0) {
+        return res.status(200).json({
         ok: false,
-        mensaje: "No hay salas creadas."
+        mensaje: "No hay salas creadas todavía, vuelve a intentarlo más tarde. :( "
       });
+    }
 
-    else return res.status(200).json(salas);
+    else { 
+        return res.status(200).json({
+        ok: true,
+        salas: salas
+        });
+    }
+
       
     }catch(err){
         res.status(400).json({
@@ -45,5 +55,59 @@ export const getSalas = async (req:Request, res:Response) => {
             error: err
         })
     }
-          
 }
+
+export const deleteSala = async (req:Request, res:Response) => {
+    try{
+        const deletedSala = await Sala.findByIdAndDelete(req.params.idSala);
+            
+        if(!deletedSala) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: "La sala que quieres eliminar no existe."
+            });
+        }
+        else { 
+            await User.updateMany({salas: deletedSala._id},{$pull: {salas: deletedSala._id }})
+            return res.status(200).json({
+            ok: true,
+            sala: deletedSala
+            });
+        } 
+    }catch(err){
+        res.status(400).json({
+            ok: false,
+            error: err
+        })
+    }
+}
+
+    export const addReserva = async (req:Request, res:Response) => {
+        try{
+            const sala= await Sala.findById(req.params.idSala);
+            if(!sala){
+                return res.status(404).json({
+                    ok: false,
+                    mensaje: "La sala que quieres reservar no se encuentra."
+                  });
+            }
+
+            const updatedUser = await User.findByIdAndUpdate(req.userId, {$push: {salas: sala._id }}, {new: true})
+            if(!updatedUser) return res.status(404).json({
+                ok: false,
+                mensaje: "Error al actualizar el usuario"
+            })
+            await Sala.findByIdAndUpdate(sala._id,{$push: {inscritos: updatedUser._id}})
+            return res.status(200).json({
+                ok: true,
+                reservas: updatedUser
+            })
+  
+        }catch(err){
+            res.status(400).json({
+                ok: false,
+                error: err
+            })
+        }
+          
+    }
