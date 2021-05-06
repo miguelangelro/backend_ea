@@ -1,4 +1,3 @@
-import { updateUser } from './admin.controller';
 import { Request, Response } from "express";
 import Sala, { ISala } from './../models/sala';
 import User,{ IUser } from './../models/user';
@@ -111,3 +110,66 @@ export const deleteSala = async (req:Request, res:Response) => {
         }
           
     }
+
+    export const getReservas = async (req:Request, res:Response) => {
+        try{
+            const user = await User.findById(req.userId);
+            if(!user){
+                return res.status(404).json({
+                    ok: false,
+                    mensaje: "No se encuentra el user."
+                  });
+            }
+            const reservasUser = await Sala.find({inscritos:user._id});
+        if(reservasUser.length == 0) {
+            return res.status(200).json({
+            ok: false,
+            mensaje: "Todavía no has reservado ninguna clase.. Vuelve atrás y empieza a ponerte en forma ;)"
+          });
+        }
+    
+        else { 
+            return res.status(200).json({
+            ok: true,
+            reservas: reservasUser
+            });
+        }
+    
+          
+        }catch(err){
+            res.status(400).json({
+                ok: false,
+                error: err
+            })
+        }
+    }
+
+export const deleteReserva = async (req:Request, res:Response) => {
+    try{
+        const user = await User.findById(req.userId); 
+        if(!user){
+            return res.status(404).json({
+                ok: false,
+                mensaje: "No se encuentra el user."
+              });
+        }
+        const sala = await Sala.findByIdAndUpdate(req.params.idReserva, {$pull: {inscritos: user._id }});
+        if(!sala){
+            return res.status(404).json({
+                ok: false,
+                mensaje: "No se encuentra la sala."
+              });
+        }
+        const userUpdated = await User.findByIdAndUpdate(req.userId,{$pull: {salas: sala._id }},{new:true});
+        
+        return res.status(200).json({
+            ok: true,
+            user: userUpdated
+        });
+    }catch(err){
+        res.status(400).json({
+            ok: false,
+            error: err
+        })
+    }
+}
