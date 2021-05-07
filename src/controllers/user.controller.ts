@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { read } from "fs-extra";
 import User from "../models/user";
 import Sala from "../models/sala";
+import io, { Socket } from "socket.io";
 import { getUsers } from "./admin.controller";
 
 
@@ -74,5 +75,10 @@ export const getCoachSala = async (req: Request, res: Response) => {
     return res.status(404).json({message:"No se encontro el coach de la sala"});
 
     return res.status(200).json(coachSala)
+}
+
+
+export const chat = async (req: Request, res: Response) => {
+
 }
 
