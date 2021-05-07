@@ -8,13 +8,7 @@ import userRoutes from './routes/user.routes'
 import photoRoutes from './routes/photo.routes'
 import adminRoutes from './routes/admin.routes'
 import postRoutes from './routes/post.routes'
-import coachRoutes from './routes/coach.Routes'
-import {Server} from 'socket.io'
-
-
-import { coachValidation } from 'middlewares/coachValidator';
-import { isObjectBindingPattern } from 'typescript';
-
+import salaRoutes from './routes/salas.routes'
 const app: Application = express();
 
 // settings
@@ -29,8 +23,9 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
-app.use('/photo', photoRoutes);
-app.use('/coach', coachRoutes )
+//app.use('/photo', photoRoutes);
+app.use('/post', postRoutes);
+app.use('/sala', salaRoutes);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 //webSocket

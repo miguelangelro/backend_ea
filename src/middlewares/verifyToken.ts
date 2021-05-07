@@ -8,7 +8,7 @@ export interface IPayload {
 
 export const TokenValidation = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.header('auth-token');
+        const token = req.header('authToken');
         if (!token) return res.status(401).json('Access Denied');
         const payload = jwt.verify(token, process.env.TOKEN_SECRET || '') as IPayload;
         req.userId = payload._id;

@@ -41,6 +41,7 @@ export const signup = async (req: Request,res: Response) => {
 };
 
 export const signin = async (req: Request, res: Response) => {
+  console.log("llego");
   const user = await User.findOne({ email: req.body.email }); // finding user by email
 
   if (!user) return res.status(400).json({
@@ -75,3 +76,23 @@ export const profile = async (req: Request,res: Response) => {
     return res.json(user); 
    
 }
+
+
+export const getMe = async (req: Request,res: Response) => { 
+  try{    
+  const userMe = await User.findById(req.userId);
+
+ // generating token
+  return res.status(200).json({
+    ok: true,
+    user: userMe
+  });
+
+}catch(err){
+  res.status(400).json({
+      ok: false,
+      error: err
+  })
+}
+  
+};
