@@ -3,7 +3,7 @@ dotenv.config();
 import { startConnection } from './database'
 
 import app from './app';
-import { idText } from 'typescript';
+import { idText, isConstructorDeclaration } from 'typescript';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 
@@ -28,18 +28,22 @@ var messages = [{
 io.on('connection', (socket:Socket) => {
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
+        console.log("llego aqui");
+        console.log(data);
         messages.push(data);
         io.sockets.emit('messages', messages); 
           
     });
+    socket.on('disconnect', function () {
+        console.log('Se ha desconectado alguien');
+    });
 });
-
 function init() {
     startConnection();
     //app.listen(app.get('port'));
-    console.log('Server on port', 3000);
+    //console.log('Server on port', 3000);
     server.listen(3000, function() {
-        console.log("servidor corriendo");
+        console.log("servidor corriendo en en puerto 3000");
     });
 };
 
