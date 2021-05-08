@@ -35,6 +35,7 @@ var messages = [{
 io.on('connection', (socket:Socket) => {
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
+<<<<<<< HEAD
         console.log('el objeto que me lo entrega es: ',data);
         
         //io.sockets.emit('messages', messages);
@@ -43,6 +44,22 @@ io.on('connection', (socket:Socket) => {
     });
     socket.on('disconnect', function () {
         console.log('Se ha desconectado alguien');
+=======
+        userX = data;
+        username= userX.username;
+        id= userX._id;
+        ListaUser.set(username, id)
+        console.log("El usuario es ", userX);
+        io.emit('listausuarios', Array.from(ListaUser));       
+    });
+    socket.on('disconnect', function () {
+        if(username){
+            console.log('Se ha desconectado: ', username);
+            ListaUser.delete(username)
+            io.emit('listausuarios', Array.from(ListaUser))
+
+        }
+>>>>>>> d0f8e0318366a9f7f91cec334de5d4edf56b8886
     });
 });
 function init() {
