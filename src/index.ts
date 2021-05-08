@@ -8,6 +8,7 @@ import app from './app';
 import { idText, isConstructorDeclaration } from 'typescript';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+import user from 'models/user'
 
 
 var express = require('express');
@@ -21,19 +22,23 @@ const server = createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 //const io = new Server(server);
 
+
+
 var messages = [{
     id:1,
     text: "Nombre",
     author: "Texto de prueba"
 }];
 
+
+
 io.on('connection', (socket:Socket) => {
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
         console.log('el objeto que me lo entrega es: ',data);
-        messages.push(data);
-        io.sockets.emit('messages', messages);
-         
+        
+        //io.sockets.emit('messages', messages);
+
           
     });
     socket.on('disconnect', function () {

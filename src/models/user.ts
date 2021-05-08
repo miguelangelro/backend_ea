@@ -15,6 +15,7 @@ export interface IUser extends Document {
     posts: Array<IPost>
     salas: Array<ISala>
     connected: number;
+    socketId: string;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -74,9 +75,12 @@ const userSchema = new Schema({
         {
             type: Number,
             default: 0
-
         }
-    ]
+    ],
+    socketId: {
+        type: String,
+        required: false
+    }
 },
 {
     versionKey: false,
