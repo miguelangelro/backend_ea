@@ -85,9 +85,9 @@ export const deleteSala = async (req:Request, res:Response) => {
         try{
             const sala= await Sala.findById(req.params.idSala);
             if(!sala){
-                return res.status(404).json({
+                return res.status(200).json({
                     ok: false,
-                    mensaje: "La sala que quieres reservar no se encuentra."
+                    mensaje: "La sala que buscas se ha eliminado.. Lo siento :( <br> Vuelve a refrescar!"
                   });
             }
 
