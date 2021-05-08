@@ -30,9 +30,10 @@ var messages = [{
 io.on('connection', (socket:Socket) => {
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
-        console.log(data);
+        console.log('el objeto que me lo entrega es: ',data);
         messages.push(data);
-        io.sockets.emit('messages', messages); 
+        io.sockets.emit('messages', messages);
+         
           
     });
     socket.on('disconnect', function () {
