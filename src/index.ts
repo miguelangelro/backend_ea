@@ -25,13 +25,13 @@ io.on('connection', (socket:Socket) => {
         id= userX._id;
         ListaUser.set(username, id)
         console.log("El usuario es ", userX);
-        io.emit('listausuarios', Array.from(username));       
+        io.emit('listausuarios', Array.from(ListaUser));       
     });
     socket.on('disconnect', function () {
         if(username){
             console.log('Se ha desconectado: ', username);
             ListaUser.delete(username)
-            io.emit('listausuarios', Array.from(username))
+            io.emit('listausuarios', Array.from(ListaUser))
 
         }
     });
