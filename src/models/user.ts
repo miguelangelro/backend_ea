@@ -14,6 +14,7 @@ export interface IUser extends Document {
     role: number;
     posts: Array<IPost>
     salas: Array<ISala>
+    connected: number;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -67,6 +68,13 @@ const userSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'Sala'
+        }
+    ],
+    connected: [
+        {
+            type: Number,
+            default: 0
+
         }
     ]
 },

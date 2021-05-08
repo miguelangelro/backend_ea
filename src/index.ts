@@ -30,7 +30,6 @@ var messages = [{
 io.on('connection', (socket:Socket) => {
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
-        console.log("llego aqui");
         console.log(data);
         messages.push(data);
         io.sockets.emit('messages', messages); 
