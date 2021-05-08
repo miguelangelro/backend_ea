@@ -1,44 +1,43 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { startConnection } from './database'
-
 import app from './app';
 import { idText, isConstructorDeclaration } from 'typescript';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-
-
 var express = require('express');
 const server = createServer(app);
-//var server = require('http').Server(app);
-//const https = require("https"),
-//  fs = require("fs");
-//const server = https.createServer(Option, app).listen(8100);
-
-//var socket = require('socket.io');
+import user, {IUser} from './models/user'
 const io = new Server(server, { cors: { origin: '*' } });
 //const io = new Server(server);
+let userX: IUser;
+let ListaUser: Map<string, number> = new Map();
+var i= [];
 
-var messages = [{
-    id:1,
-    text: "Nombre",
-    author: "Texto de prueba"
-}];
-
+var messages = [{}];
 io.on('connection', (socket:Socket) => {
+    let username: string;
+    let id: number;
     console.log("nueva conexion");
     socket.on('new-message', function(data) {
-        console.log("llego aqui");
-        console.log(data);
-        messages.push(data);
-        io.sockets.emit('messages', messages); 
-          
+        userX = data;
+        username= userX.username;
+        id= userX._id;
+        ListaUser.set(username, id)
+        console.log("El usuario es ", userX);
+        io.emit('listausuarios', Array.from(username));       
     });
     socket.on('disconnect', function () {
-        console.log('Se ha desconectado alguien');
+        if(username){
+            console.log('Se ha desconectado: ', username);
+            ListaUser.delete(username)
+            io.emit('listausuarios', Array.from(username))
+
+        }
     });
 });
 function init() {
+    let usuarios: IUser[] = [];
     startConnection();
     //app.listen(app.get('port'));
     //console.log('Server on port', 3000);
