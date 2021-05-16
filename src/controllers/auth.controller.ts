@@ -41,7 +41,6 @@ export const signup = async (req: Request,res: Response) => {
 };
 
 export const signin = async (req: Request, res: Response) => {
-  console.log("llego");
   const user = await User.findOne({ email: req.body.email }); // finding user by email
 
   if (!user) return res.status(400).json({
