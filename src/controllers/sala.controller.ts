@@ -85,12 +85,30 @@ export const deleteSala = async (req:Request, res:Response) => {
         try{
             const sala= await Sala.findById(req.params.idSala);
             if(!sala){
-                return res.status(404).json({
+                return res.status(200).json({
                     ok: false,
-                    mensaje: "La sala que quieres reservar no se encuentra."
+                    mensaje: "La sala que buscas se ha eliminado.. Lo siento :( <br> Vuelve a refrescar!"
                   });
             }
+            if(sala.inscritos.length== sala.maxInscritos){
+                return res.status(200).json({
+                    ok: false,
+                    mensaje: "La sala ha alcanzado el número máximo de inscritos."
+                })
+            }
+           
+            
+            const user = await User.findById(req.userId);
+            if(!user) return res.status(404)
 
+            const checkUser= await User.findOne({_id: user._id , salas: sala._id})
+
+            if(checkUser!= null){ 
+                return res.status(200).json({
+                ok: false,
+                mensaje: "Ya has reservado plaza en esta sala."
+                })
+            }
             const updatedUser = await User.findByIdAndUpdate(req.userId, {$push: {salas: sala._id }}, {new: true})
             if(!updatedUser) return res.status(404).json({
                 ok: false,
@@ -173,3 +191,5 @@ export const deleteReserva = async (req:Request, res:Response) => {
         })
     }
 }
+
+//Fin
