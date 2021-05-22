@@ -13,6 +13,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 let userX: IUser;
 let ListaUser: Map<string, IUser> = new Map();
 var i= [];
+var nsala = 0;
 var aceptar;
 
 var messages = ['bienvenidos al chat'];
@@ -41,7 +42,14 @@ io.on('connection', (socket:Socket) => {
 
     socket.on('invitacion', function(data) {
         console.log(data)
-        io.sockets.emit('invitacion2', data);    
+        socket.emit('numero', nsala)
+        io.sockets.emit('invitacion2', data, nsala);
+        nsala++;
+        console.log('el numero de salas activas es: ' + nsala)    
+    });
+    socket.on('nsala', function(data) {
+        console.log(data)
+        socket.emit('numero', data)   
     });
     
     socket.on('disconnect', function () {
