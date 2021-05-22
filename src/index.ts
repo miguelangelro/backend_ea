@@ -13,6 +13,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 let userX: IUser;
 let ListaUser: Map<string, IUser> = new Map();
 var i= [];
+var aceptar;
 
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
@@ -25,8 +26,10 @@ io.on('connection', (socket:Socket) => {
         id= userX._id;
         ListaUser.set(username, userX)
         console.log("El usuario es ", userX);
-        io.emit('listausuarios', Array.from(ListaUser.values()))      
+        io.emit('listausuarios', Array.from(ListaUser.values()))
+        io.sockets.emit('messages', messages); 
     });
+
     socket.on('new-message-g', function(data) {
         messages.push(data)
         while(messages.length>20){
@@ -35,6 +38,12 @@ io.on('connection', (socket:Socket) => {
         console.log(messages);
         io.sockets.emit('messages', messages);     
     });
+
+    socket.on('invitacion', function(data) {
+        console.log(data)
+        io.sockets.emit('invitacion2', data);    
+    });
+    
     socket.on('disconnect', function () {
         if(username){
             console.log('Se ha desconectado: ', username);
