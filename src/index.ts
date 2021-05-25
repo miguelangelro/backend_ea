@@ -8,7 +8,7 @@ import { Server, Socket } from "socket.io";
 var express = require('express');
 const server = createServer(app);
 import user, {IUser} from './models/user'
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 //const io = new Server(server);
 let userX: IUser;
 let ListaUser: Map<string, IUser> = new Map();
