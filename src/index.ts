@@ -24,6 +24,7 @@ io.on('connection', (socket:Socket) => {
     socket.on('me-conecto', function(data) {
         userX = data;
         username= userX.username;
+       
         id= userX._id;
         ListaUser.set(username, userX)
         console.log("El usuario es ", userX);
@@ -51,6 +52,13 @@ io.on('connection', (socket:Socket) => {
         console.log(data)
         socket.emit('numero', data)   
     });
+
+    socket.on('mensajesPriv',function (data, data2) {
+        console.log(" mensaje: ",data);
+        console.log("numero de sala:", data2)
+        io.sockets.emit('mensajeSala', data, data2);
+       
+    });
     
     socket.on('disconnect', function () {
         if(username){
@@ -60,6 +68,9 @@ io.on('connection', (socket:Socket) => {
 
         }
     });
+
+    
+
 });
 function init() {
     let usuarios: IUser[] = [];
