@@ -8,14 +8,15 @@ import { Server, Socket } from "socket.io";
 var express = require('express');
 const server = createServer(app);
 import user, {IUser} from './models/user'
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 //const io = new Server(server);
 let userX: IUser;
 let ListaUser: Map<string, IUser> = new Map();
 var i= [];
 var nsala = 0;
 var aceptar;
-var sala = String(nsala)
+var hab;
+
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
     let username: string;
@@ -24,7 +25,6 @@ io.on('connection', (socket:Socket) => {
     socket.on('me-conecto', function(data) {
         userX = data;
         username= userX.username;
-       
         id= userX._id;
         ListaUser.set(username, userX)
         console.log("El usuario es ", userX);
@@ -42,8 +42,8 @@ io.on('connection', (socket:Socket) => {
     });
 
     socket.on('invitacion', function(data) {
-        socket.join (sala),
-        
+        hab =  String(nsala)
+        socket.join(hab);
         console.log(data)
         socket.emit('numero', nsala)
         io.sockets.emit('invitacion2', data, nsala);
@@ -52,13 +52,17 @@ io.on('connection', (socket:Socket) => {
     });
     socket.on('nsala', function(data) {
         console.log(data)
+        hab =  String(data)
+        socket.join(hab);
         socket.emit('numero', data)   
     });
-
+    
     socket.on('mensajesPriv',function (data, data2) {
+        hab =  String(data2)
+        io.sockets.to(hab).emit('mensajeSala', data);
         console.log(" mensaje: ",data);
-        console.log("numero de sala:", data2)
-        io.sockets.emit('mensajeSala', data, data2);
+        console.log("numero de sala:", hab)
+        
        
     });
     
@@ -70,25 +74,6 @@ io.on('connection', (socket:Socket) => {
 
         }
     });
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-   
-
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    
-
 });
 function init() {
     let usuarios: IUser[] = [];
