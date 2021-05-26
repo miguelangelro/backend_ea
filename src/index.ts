@@ -15,7 +15,7 @@ let ListaUser: Map<string, IUser> = new Map();
 var i= [];
 var nsala = 0;
 var aceptar;
-
+var sala = String(nsala)
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
     let username: string;
@@ -42,6 +42,8 @@ io.on('connection', (socket:Socket) => {
     });
 
     socket.on('invitacion', function(data) {
+        socket.join (sala),
+        
         console.log(data)
         socket.emit('numero', nsala)
         io.sockets.emit('invitacion2', data, nsala);
@@ -68,6 +70,22 @@ io.on('connection', (socket:Socket) => {
 
         }
     });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     
 
