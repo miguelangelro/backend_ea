@@ -11,12 +11,12 @@ import user, {IUser} from './models/user'
 const io = new Server(server, { cors: { origin: '*' } });
 //const io = new Server(server);
 let userX: IUser;
-let usuario: IUser; //
 let ListaUser: Map<string, IUser> = new Map();
-let ListaConectado: Array<IUser> = new Array();
 var i= [];
+var nsala = 0;
+var aceptar;
 
-var messages = [{}];
+var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
     let username: string;
     let id: number;
@@ -27,18 +27,50 @@ io.on('connection', (socket:Socket) => {
        
         id= userX._id;
         ListaUser.set(username, userX)
-        
-        console.log("El usuario es ", username);
-        io.emit('listausuarios', Array.from(ListaUser));
+        console.log("El usuario es ", userX);
+        io.emit('listausuarios', Array.from(ListaUser.values()))
+        io.sockets.emit('messages', messages); 
     });
+
+    socket.on('new-message-g', function(data) {
+        messages.push(data)
+        while(messages.length>20){
+            messages.shift()
+        }
+        console.log(messages);
+        io.sockets.emit('messages', messages);     
+    });
+
+    socket.on('invitacion', function(data) {
+        console.log(data)
+        socket.emit('numero', nsala)
+        io.sockets.emit('invitacion2', data, nsala);
+        nsala++;
+        console.log('el numero de salas activas es: ' + nsala)    
+    });
+    socket.on('nsala', function(data) {
+        console.log(data)
+        socket.emit('numero', data)   
+    });
+
+    socket.on('mensajesPriv',function (data, data2) {
+        console.log(" mensaje: ",data);
+        console.log("numero de sala:", data2)
+        io.sockets.emit('mensajeSala', data, data2);
+       
+    });
+    
     socket.on('disconnect', function () {
         if(username){
             console.log('Se ha desconectado: ', username);
             ListaUser.delete(username)
-            io.emit('listausuarios', Array.from(ListaUser))
+            io.emit('listausuarios', Array.from(ListaUser.values()))
 
         }
     });
+
+    
+
 });
 function init() {
     let usuarios: IUser[] = [];
