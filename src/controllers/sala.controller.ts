@@ -138,7 +138,7 @@ export const deleteSala = async (req:Request, res:Response) => {
                     mensaje: "No se encuentra el user."
                   });
             }
-            const reservasUser = await Sala.find({inscritos:user._id});
+            const reservasUser = await Sala.find({inscritos:user._id}).populate('inscritos', "username avatar");
         if(reservasUser.length == 0) {
             return res.status(200).json({
             ok: false,
