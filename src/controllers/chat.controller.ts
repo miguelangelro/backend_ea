@@ -1,21 +1,16 @@
-'use strict';
-export{};
+import User, {IUser} from '../models/user';
+import { Request, Response } from "express";
 
-let UsuariosSchema = require('../models/user');
-let MensajesSchema = require('../models/mensajes');
-let ChatsSchema = require('../models/Chats');
-let mongoose = require('mongoose');
-
-
-/*exports.addChat = async function (req, res){  //crear un nuevo chat
-    let chat = req.body.chat;
-    let newChat = new ChatsSchema (chat);
-    try {
-        await newChat.save();
-        res.status(200).send({message: "Chat nuevo"})
+export const getUsers = async (req:Request, res:Response) => {
+    try{
+    const users = await User.find({}, {password: 0});
+    if(users==null) return res.status(404).json({message: "Users not found"});
+    else return res.status(200).json(users);
+    }catch(err){
+        res.status(400).json({
+            ok: false,
+            error: err
+        })
     }
-    catch(err){
-        res.status(500).send(err);
-        console.log(err);
-    }
-};*/
+          
+}
