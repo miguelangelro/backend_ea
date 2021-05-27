@@ -30,7 +30,7 @@ export const postusuario = async (req: Request, res: Response) => {
 
       return res.status(200).json({
         ok: true,
-        data: savedPost,
+        post: savedPost,
       });
   } catch (err) {
     res.status(400).json({
@@ -48,11 +48,11 @@ export const getpostusuario = async (req: Request, res: Response) => {
     const pagina = Number(req.query.pagina) || 1;
     let skip = pagina -1;
     skip = skip *10;
-    const post = await Postusuarios.find().sort({_id: -1}).skip(skip).limit(10).populate('usuario','-password');
+    const posts = await Postusuarios.find().sort({_id: -1}).skip(skip).limit(10).populate('usuario','-password');
  return res.status(200).json({
         ok: true,
         pagina,
-        data: post
+        posts: posts
       });
   } catch (err) {
     res.status(400).json({
