@@ -11,6 +11,7 @@ export interface IUser extends Document {
     password: string;
     photos: Array<IPhoto>;
     avatar: string;
+    universidad: string;
     role: number;
     posts: Array<IPost>
     salas: Array<ISala>
@@ -49,6 +50,10 @@ const userSchema = new Schema({
     avatar: {
         type: String,
         default: 'av-1.png'
+    },
+    universidad: {
+        type: String,
+        required: true
     },
     role: {
         type: Number, // 0 user, 1 admin, 2 coach

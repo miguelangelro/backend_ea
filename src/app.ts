@@ -14,7 +14,7 @@ import fileUpload from 'express-fileupload';
 const app: Application = express();
 
 // settings
-app.set('port', 8085 || process.env.PORT);
+app.set('port', 3000);
 
 // Middlewares
 app.use(morgan('dev'));
