@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import User, { IUser } from "../models/user";
 import jwt from 'jsonwebtoken';
-
+import nodemailer from 'nodemailer'
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find({}, { password: 0 });
   console.log(users);
@@ -106,3 +106,30 @@ export const updateUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const contactUs = async (req: Request, res:Response) => {
+
+  console.log('Hola:', req.body)
+  
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: 'appgymder@gmail.com', // generated ethereal user
+      pass: 'ocnp fllt hysd uwkg', // generated ethereal password
+    },
+  });
+
+    await transporter.sendMail({
+    from: '"Nuevo mensaje 👻" <appgymder@gmail.com>', // sender address
+    to: "bar@example.com,", // list of receivers
+    subject: req.body.subject, // Subject line
+    text:  'mensaje: ' + req.body.bodyContent+ '\n' + 'Lo ha escrito:  '+ req.body.to + '\n' +  'asunto: '+ req.body.subject
+          
+              // plain text body
+     // html body
+  });
+
+
+}

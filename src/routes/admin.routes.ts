@@ -10,6 +10,7 @@ router.get('/:id',TokenValidation,adminValidation,getUser);
 router.post('/users',TokenValidation,adminValidation,createUser);
 router.put('/:id',TokenValidation,adminValidation,updateUser);
 router.delete('/:id',TokenValidation,adminValidation,deleteUser);
+//router.get('')
 
 
 export default router;
