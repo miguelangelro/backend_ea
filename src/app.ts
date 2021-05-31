@@ -12,7 +12,7 @@ import salaRoutes from './routes/salas.routes'
 const app: Application = express();
 
 // settings
-app.set('port', 3000 || process.env.PORT);
+app.set('port', 3000);
 
 // Middlewares
 app.use(morgan('dev'));

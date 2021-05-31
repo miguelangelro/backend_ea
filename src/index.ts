@@ -49,7 +49,7 @@ function init() {
     startConnection();
     //app.listen(app.get('port'));
     //console.log('Server on port', 3000);
-    server.listen(3000, function() {
+    server.listen(app.get('port'), function() {
         console.log("servidor corriendo en en puerto 3000");
     });
 };
