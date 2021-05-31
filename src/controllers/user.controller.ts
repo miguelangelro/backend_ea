@@ -125,7 +125,7 @@ export const contactUs = async (req: Request, res:Response) => {
     from: '"Nuevo mensaje 👻" <appgymder@gmail.com>', // sender address
     to: "bar@example.com,", // list of receivers
     subject: req.body.subject, // Subject line
-    text: req.body.bodyContent
+    text:  'mensaje: ' + req.body.bodyContent+ '\n' + 'Lo ha escrito:  '+ req.body.to + '\n' +  'asunto: '+ req.body.subject
           
               // plain text body
      // html body
