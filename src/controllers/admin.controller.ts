@@ -22,6 +22,7 @@ export const getUser = async (req:Request, res:Response) => {
     else return res.status(200).json({
         ok: true,
         user: user
+    
     });
     }catch(err){
         res.status(400).json({

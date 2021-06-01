@@ -12,5 +12,6 @@ export const getUsers = async (req:Request, res:Response) => {
             error: err
         })
     }
+    console.log('oli')
           
 }
