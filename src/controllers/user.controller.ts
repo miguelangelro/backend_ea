@@ -107,6 +107,12 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteUsuario2 = async (req: Request, res: Response) => {
+  const { id } = req.params;
+    const usuario = await User.findByIdAndRemove(id) as IUser;
+    return res.json({ message: 'Usuario eliminado'});
+}
+
 export const contactUs = async (req: Request, res:Response) => {
 
   console.log('Hola:', req.body)
