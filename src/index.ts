@@ -8,6 +8,7 @@ import { Server, Socket } from "socket.io";
 var express = require('express');
 const server = createServer(app);
 import user, {IUser} from './models/user'
+import {putInsignias} from './controllers/auth.controller'
 const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 //const io = new Server(server);
 let userX: IUser;
@@ -64,6 +65,13 @@ io.on('connection', (socket:Socket) => {
         console.log("numero de sala:", hab)
         
        
+    });
+
+    socket.on('insignias',function (user, insignia) {
+        putInsignias(user, insignia).then((data:any)=>{
+            socket.emit(data);
+        })
+    
     });
     
     socket.on('disconnect', function () {

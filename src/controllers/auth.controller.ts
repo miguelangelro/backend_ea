@@ -17,7 +17,8 @@ export const signup = async (req: Request,res: Response) => {
         role,
         avatar,
         password,
-        photos: []
+        photos: [],
+        insignias: []
     });
 
   user.password = await user.encryptPassword(user.password);
@@ -177,9 +178,46 @@ export const signinRedesSociales = async (req: Request, res: Response) => {
   res.status(400).json({
     ok: false,
     error: err
-})
+  })
  }
 };
+
+export const getInsignias = async (req: Request, res: Response) => {
+  try{    
+    const userMe = await User.findById(req.userId);
+    if(userMe==null) return 0;
+
+    if(userMe?.insignias.length>0){
+    return res.status(200).json({
+      ok: true,
+      insignias: userMe.insignias
+    });
+  }
+  else {
+    return res.status(200).json({
+      ok: false,
+      mensaje: "No tienes insignias."
+  })
+  }
+  
+  }catch(err){
+    res.status(400).json({
+        ok: false,
+        err: err
+    })
+  }
+} 
+
+export const putInsignias = async (user:any, insignia:any) =>{
+  try{    
+    const userMe = await User.findByIdAndUpdate(user._id, {$push: {insignias: insignia}}, {new: true});
+    return 1;
+  
+  }catch(err){
+    return 0;
+  }
+
+}
 
 
 

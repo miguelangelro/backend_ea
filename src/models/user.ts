@@ -17,6 +17,7 @@ export interface IUser extends Document {
     connected: number;
     socketId: string;
     provider: string;
+    insignias: string;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -85,7 +86,12 @@ const userSchema = new Schema({
     provider: {
         type: String,
         required: false
-    }
+    },
+    insignias: [
+        {
+            type: String
+        }
+    ]
 },
 {
     versionKey: false,
