@@ -13,7 +13,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   const userFound = await User.findOne(
     { username: req.params.username },
-    { password: 0, email: 0 }
+    { password: 0 }
   );
   if (userFound == null)
     return res.status(404).json({ message: "User not found" });
@@ -44,16 +44,24 @@ export const deleteUser = async (req: Request, res: Response) => {
   else return res.status(400).json("User does not exist.");
 };
 
+export const deleteUserId = async (req: Request, res: Response) => {
+  console.log( req.params.id)
+  const userDeleted = await User.findByIdAndDelete( req.params.id);
+  if (userDeleted != null)
+    return res.status(200).json({ok: true});
+  else return res.status(400).json({ok: false});
+};
+
 export const updateUser = async (req: Request, res: Response) => {
   try {
   
-    let { password, username, email, avatar } = req.body;
+    let { password, username, email, avatar, notificaciones, privacidad  } = req.body;
     if ((password == null)) {
       //no se cambia el password 
       const user = await User.findById(req.userId);
       const userUpdated = await User.findByIdAndUpdate(
         req.userId,
-        { $set: { username: username, email: email, avatar: avatar } },
+        { $set: { username: username, email: email, avatar: avatar, notificaciones: notificaciones, privacidad: privacidad } },
         { new: true, runValidators: true }
       );
       // generating token
@@ -82,6 +90,9 @@ export const updateUser = async (req: Request, res: Response) => {
             email: email,
             password: password,
             avatar: avatar,
+            notificaciones: notificaciones,
+            privacidad: privacidad,
+
           },
         },
         { new: true, runValidators: true }
@@ -99,6 +110,37 @@ export const updateUser = async (req: Request, res: Response) => {
       }else{return res.status(404).json({ message: "User not found" }); }
      
     }
+  } catch (err) {
+    res.status(400).json({
+      ok: false,
+      error: err,
+    });
+  }
+};
+
+export const updateUserGym = async (req: Request, res: Response) => {
+  try {
+    console.log("Dentro");
+    console.log(req.params.id);
+    console.log(req.body);
+
+    let { username, email, avatar, privacidad, notificaciones, autenticar } = req.body;
+      //no se cambia el password 
+      //const user = await User.findById(req.params.id);
+      const userUpdated = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: { username: username, email: email, avatar: avatar, privacidad: privacidad, notificaciones: notificaciones, autenticar: autenticar } },
+        { new: true, runValidators: true }
+      );
+      // generating token
+      if (userUpdated){
+      return res.status(200).json({
+        ok: true,
+        data: userUpdated
+      });
+    }else{return res.status(404).json({ message: "User not found" }); } 
+    
+    
   } catch (err) {
     res.status(400).json({
       ok: false,

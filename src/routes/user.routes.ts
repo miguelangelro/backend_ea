@@ -1,7 +1,8 @@
 import app from "app";
 import {Router} from "express"; 
-import {getAllUsers, getUser, updatePassword, deleteUser, updateUser, contactUs} from '../controllers/user.controller'
+import {getAllUsers, getUser, updatePassword, deleteUser, updateUser, contactUs, deleteUserId, updateUserGym } from '../controllers/user.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
+import { adminValidation } from '../middlewares/adminValidator'
 
 const router = Router();
 
@@ -12,5 +13,7 @@ router.put('/update', TokenValidation, updatePassword) //Esta bien, pero igual e
 router.delete('/:username',TokenValidation, deleteUser);
 router.put('/updateuser', TokenValidation, updateUser );
 router.post('/contactUs', contactUs);
+router.delete('/delete/:id',TokenValidation, deleteUserId);
+router.put('/update/updateuser/:id', TokenValidation, adminValidation, updateUserGym );
 
 export default router;
