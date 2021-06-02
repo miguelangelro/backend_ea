@@ -14,6 +14,8 @@ export interface IUser extends Document {
     role: number;
     posts: Array<IPost>
     salas: Array<ISala>
+    palabra1: string;
+    palabra2: string;
     connected: number;
     socketId: string;
     provider: string;
@@ -23,6 +25,14 @@ export interface IUser extends Document {
 
 const userSchema = new Schema({
     name: {
+        type: String,
+        required: false
+    },
+    palabra1: {
+        type: String,
+        required: false
+    },
+    palabra2: {
         type: String,
         required: false
     },

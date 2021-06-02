@@ -1,13 +1,23 @@
 import { Request, response, Response } from "express";
 import User, { IUser } from "../models/user";
+import Faq, { IFaq } from "../models/faq";
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer'
+
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find({}, { password: 0 });
   console.log(users);
   if (users == null)
     return res.status(404).json({ message: "Users not found" });
   else return res.status(200).json(users);
+};
+
+export const getFaq = async (req: Request, res: Response) => {
+  const faqs = await Faq.find({});
+  console.log(faqs);
+  if (faqs == null)
+    return res.status(404).json({ message: "Preguntas no encontradas" });
+  else return res.status(200).json(faqs);
 };
 
 export const getUser = async (req: Request, res: Response) => {
