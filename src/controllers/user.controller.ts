@@ -2,6 +2,7 @@ import { Request, response, Response } from "express";
 import User, { IUser } from "../models/user";
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer'
+import Contact, { IContact } from "../models/contact";
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find({}, { password: 0 });
   console.log(users);
@@ -37,6 +38,7 @@ export const updatePassword = async (req: Request, res: Response) => {
   }
 };
 
+
 export const deleteUser = async (req: Request, res: Response) => {
   const userDeleted = User.deleteOne({ username: req.params.username });
   if (userDeleted != null)
@@ -47,18 +49,18 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
   
-    let { password, username, email, avatar } = req.body;
+    let { password, username, email, avatar, examen } = req.body;
     if ((password == null)) {
       //no se cambia el password 
       const user = await User.findById(req.userId);
       const userUpdated = await User.findByIdAndUpdate(
         req.userId,
-        { $set: { username: username, email: email, avatar: avatar } },
+        { $set: { username: username, email: email, avatar: avatar, examen: examen } },
         { new: true, runValidators: true }
       );
       // generating token
       if (userUpdated){
-      const token: string = jwt.sign({_id: userUpdated._id,username: userUpdated.username, email: userUpdated.email }
+      const token: string = jwt.sign({_id: userUpdated._id,username: userUpdated.username, email: userUpdated.email}
       ,process.env.TOKEN_SECRET || 'tokenTEST',  { expiresIn: 86400 })  // data to be stored, secret key
       return res.status(200).json({
         ok: true,
@@ -88,7 +90,7 @@ export const updateUser = async (req: Request, res: Response) => {
       );
 
       if (userUpdated){
-        const token: string = jwt.sign({_id: userUpdated._id,username: userUpdated.username, email: userUpdated.email }
+        const token: string = jwt.sign({_id: userUpdated._id,username: userUpdated.username, email: userUpdated.email}
         ,process.env.TOKEN_SECRET || 'tokenTEST',  { expiresIn: 86400 })  // data to be stored, secret key
         return res.status(200).json({
           ok: true,
@@ -108,8 +110,31 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 export const contactUs = async (req: Request, res:Response) => {
-
+try{
   console.log('Hola:', req.body)
+  const {subject, bodyContent, to} = req.body;
+
+    const contact: IContact = new Contact ({
+        subject,
+        bodyContent,
+        to
+    });
+    const savedContact = await contact.save ();
+    console.log("he guardado la consulta")
+    return res.status(200).json({
+      ok: true,
+      subject:savedContact.subject,
+      body:savedContact.bodyContent,
+      to:savedContact.to
+    });
+  
+  }catch(err){
+    res.status(400).json({
+        ok: false,
+        error: err
+    })
+  }
+
   
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -125,10 +150,8 @@ export const contactUs = async (req: Request, res:Response) => {
     from: '"Nuevo mensaje 👻" <appgymder@gmail.com>', // sender address
     to: "bar@example.com,", // list of receivers
     subject: req.body.subject, // Subject line
-    text: req.body.bodyContent
+    text:  'mensaje: ' + req.body.bodyContent+ '\n' + 'Lo ha escrito:  '+ req.body.to + '\n' +  'asunto: '+ req.body.subject
           
-              // plain text body
-     // html body
   });
 
 

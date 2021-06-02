@@ -7,7 +7,7 @@ import {sendEmail} from '../libs/sendEmail'
 export const signup = async (req: Request,res: Response) => { 
   try{    
   console.log(req.body);
-    const {name, surname, username, email, role, avatar, password, photos} = req.body;
+    const {name, surname, username, email, role, avatar, password, photos, examen} = req.body;
 
     const user: IUser = new User ({
         name, 
@@ -17,7 +17,7 @@ export const signup = async (req: Request,res: Response) => {
         role,
         avatar,
         password,
-        photos: []
+        photos: [],
     });
 
   user.password = await user.encryptPassword(user.password);

@@ -1,7 +1,7 @@
 import app from "app";
 import {Router} from "express"; 
 import { adminValidation } from "../middlewares/adminValidator";
-import {getAllUsers, getUser, updatePassword, deleteUser, updateUser} from '../controllers/user.controller'
+import {getAllUsers, getUser, updatePassword, deleteUser} from '../controllers/user.controller'
 import {postusuario, getpostusuario, uploadfiles, getimagen} from '../controllers/postusuarios.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
 
