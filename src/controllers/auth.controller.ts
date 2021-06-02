@@ -208,9 +208,10 @@ export const getInsignias = async (req: Request, res: Response) => {
   }
 } 
 
-export const putInsignias = async (user:any, insignia:any) =>{
+export const putInsignias = async (req:Request, res:Response) =>{
   try{    
-    const userMe = await User.findByIdAndUpdate(user._id, {$push: {insignias: insignia}}, {new: true});
+    console.log(req.body.insignia)
+    const userMe = await User.findByIdAndUpdate(req.userId, {$push: {insignias: req.body.insignia}}, {new: true});
     return 1;
   
   }catch(err){

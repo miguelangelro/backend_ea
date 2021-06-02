@@ -67,13 +67,13 @@ io.on('connection', (socket:Socket) => {
        
     });
 
-    socket.on('insignias',function (user, insignia) {
+   /* socket.on('insignias',function (user, insignia) {
         putInsignias(user, insignia).then((data:any)=>{
             socket.emit(data);
         })
     
     });
-    
+    */
     socket.on('disconnect', function () {
         if(username){
             console.log('Se ha desconectado: ', username);

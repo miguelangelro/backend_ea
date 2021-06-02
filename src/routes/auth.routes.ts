@@ -1,3 +1,4 @@
+import { putInsignias } from './../controllers/auth.controller';
 import { Router } from 'express';
 const router = Router();
 
@@ -12,6 +13,6 @@ router.post('/forgotpassword', forgotPassword);
 router.post('/checkemail', checkemail);
 router.post('/signinrs', signinRedesSociales)
 router.get('/insignias',TokenValidation, getInsignias);
-
+router.put('/insignias',TokenValidation, putInsignias);
 
 export default router;
