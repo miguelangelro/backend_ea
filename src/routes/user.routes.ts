@@ -1,6 +1,6 @@
 import app from "app";
 import {Router} from "express"; 
-import {getAllUsers, getUser, updatePassword, deleteUser, updateUser, contactUs} from '../controllers/user.controller'
+import {getAllUsers, getUser, updatePassword, deleteUser, updateUser, contactUs, agregarAmigo} from '../controllers/user.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
 
 const router = Router();
@@ -12,5 +12,6 @@ router.put('/update', TokenValidation, updatePassword) //Esta bien, pero igual e
 router.delete('/:username',TokenValidation, deleteUser);
 router.put('/updateuser', TokenValidation, updateUser );
 router.post('/contactUs', contactUs);
+router.post('/addAmigo',TokenValidation, agregarAmigo);
 
 export default router;

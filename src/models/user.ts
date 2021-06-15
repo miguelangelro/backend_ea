@@ -3,6 +3,7 @@ import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcryptjs';
 import { IPhoto } from './photo';
 import { ISala } from './sala';
+import {IAmigo} from './amigo'
 
 export interface IUser extends Document {
     name: string;
@@ -14,6 +15,7 @@ export interface IUser extends Document {
     role: number;
     posts: Array<IPost>
     salas: Array<ISala>
+    amigos: Array<IUser>
     connected: number;
     socketId: string;
     provider: string;
@@ -70,6 +72,12 @@ const userSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'Sala'
+        }
+    ],
+    amigos : [
+        {
+             type: Schema.Types.ObjectId,
+             ref: 'User'
         }
     ],
     connected: [
