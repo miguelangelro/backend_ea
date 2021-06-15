@@ -176,3 +176,15 @@ else {
 }
 
 }
+export const dameUsuario = async (req: Request, res: Response) => {
+  
+  
+  const userFound = await User.findById(req.params.id);
+  
+  if (userFound == null){
+    return res.status(404).json({ message: "User HOLI" });
+    }
+  else return res.status(200).json(userFound);
+  
+}
+
