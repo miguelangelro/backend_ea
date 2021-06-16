@@ -16,6 +16,8 @@ var i= [];
 var nsala = 0;
 var aceptar;
 var hab;
+let listaAmigos: [];
+let listaAmigosEnviar: IUser[];
 
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
@@ -66,6 +68,17 @@ io.on('connection', (socket:Socket) => {
         
        
     });
+    
+    socket.on('amigo Agregado', function(data){
+        listaAmigos=data;
+        console.log('lista amigos', listaAmigos);
+        listaAmigos.forEach(function (value){
+            console.log('for each value', value);
+        })
+
+    });
+
+    
     
     socket.on('disconnect', function () {
         if(username){
