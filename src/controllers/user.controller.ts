@@ -141,19 +141,19 @@ export const contactUs = async (req: Request, res:Response) => {
 
 export const agregarAmigo = async (req: Request, res:Response) => {
 const {emailAmigo , idInvitador} = req.params;
-console.log ('error',req.body.emailAmigo);
-console.log('error',)
+//console.log ('error',req.body.emailAmigo);
+//console.log('error',)
 const amigo = await User.findOne({"email": req.body.emailAmigo});
 
 const savedAmigo = await amigo?.save();
-console.log ('el amigo es: '+ amigo);
+//console.log ('el amigo es: '+ amigo);
 
 const elqueInvita = await User.findById(req.body.idInvitador); 
-console.log('el que invita es', elqueInvita);
+//console.log('el que invita es', elqueInvita);
 
 const listaAmigos = elqueInvita?.amigos;
 
-console.log('lista de amigos', listaAmigos);
+//console.log('lista de amigos', listaAmigos);
 
 const repetido = listaAmigos?.find( friend => friend == amigo?.id)
 
@@ -184,4 +184,5 @@ export const dameUsuario = async (req: Request, res: Response) => {
   else return res.status(200).json(userFound);
 
 }
+
 

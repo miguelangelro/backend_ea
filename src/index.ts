@@ -16,6 +16,7 @@ var i= [];
 var nsala = 0;
 var aceptar;
 var hab;
+var sec;
 let listaAmigos: [];
 let listaAmigosEnviar: IUser[];
 
@@ -59,7 +60,7 @@ io.on('connection', (socket:Socket) => {
         socket.join(hab);
         socket.emit('numero', data)   
     });
-    
+   
     socket.on('mensajesPriv',function (data, data2) {
         hab =  String(data2)
         io.sockets.to(hab).emit('mensajeSala', data);
@@ -69,13 +70,11 @@ io.on('connection', (socket:Socket) => {
        
     });
     
-    socket.on('amigo Agregado', function(data){
-        listaAmigos=data;
-        console.log('lista amigos', listaAmigos);
-        listaAmigos.forEach(function (value){
-            console.log('for each value', value);
-        })
-
+    socket.on('miamigo', function(data){
+        console.log(userX)
+        console.log('lista amigos', userX.amigos);
+        console.log("paso por aqui")
+        socket.emit('refresh')
     });
 
     
