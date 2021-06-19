@@ -16,6 +16,8 @@ var i= [];
 var nsala = 0;
 var aceptar;
 var hab;
+let listaAmigos: [];
+let listaAmigosEnviar: IUser[];
 
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
@@ -25,6 +27,7 @@ io.on('connection', (socket:Socket) => {
     socket.on('me-conecto', function(data) {
         userX = data;
         username= userX.username;
+        userX.conectado=1;
         id= userX._id;
         ListaUser.set(username, userX)
         console.log("El usuario es ", userX);
@@ -66,8 +69,20 @@ io.on('connection', (socket:Socket) => {
        
     });
     
+    socket.on('amigo Agregado', function(data){
+        listaAmigos=data;
+        console.log('lista amigos', listaAmigos);
+        listaAmigos.forEach(function (value){
+            console.log('for each value', value);
+        })
+
+    });
+
+    
+    
     socket.on('disconnect', function () {
         if(username){
+            userX.conectado=0;
             console.log('Se ha desconectado: ', username);
             ListaUser.delete(username)
             io.emit('listausuarios', Array.from(ListaUser.values()))
