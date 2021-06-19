@@ -16,4 +16,5 @@ router.post('/contactUs', contactUs);
 router.post('/addAmigo',TokenValidation, agregarAmigo);
 router.get('/dameUsuario/:id', TokenValidation, dameUsuario);
 
+
 export default router;
