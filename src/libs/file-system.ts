@@ -37,6 +37,11 @@ export default class FileSystem {
   }
 
   private crearCarpetaUsuario(userId: string) {
+    const pathUploads = path.resolve(__dirname, "../uploads/");
+    const existeuploads = fs.existsSync(pathUploads);
+    if (!existeuploads) {
+      fs.mkdirSync(pathUploads);
+    }
     const pathUser = path.resolve(__dirname, "../uploads/", userId);
     const pathUserTemp = pathUser + "/temp";
     console.log('pathuser', pathUserTemp);
