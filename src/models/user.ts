@@ -29,6 +29,14 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
+    palabra1: {
+        type: String,
+        required: false
+    },
+    palabra2: {
+        type: String,
+        required: false
+    },
     surname: {
         type: String,
         required: false
