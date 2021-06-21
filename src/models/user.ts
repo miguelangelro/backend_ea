@@ -3,6 +3,7 @@ import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcryptjs';
 import { IPhoto } from './photo';
 import { ISala } from './sala';
+import {IAmigo} from './amigo'
 
 export interface IUser extends Document {
     name: string;
@@ -12,8 +13,10 @@ export interface IUser extends Document {
     photos: Array<IPhoto>;
     avatar: string;
     role: number;
+    conectado: number;
     posts: Array<IPost>
     salas: Array<ISala>
+    amigos: Array<IUser>
     connected: number;
     socketId: string;
     provider: string;
@@ -23,6 +26,14 @@ export interface IUser extends Document {
 
 const userSchema = new Schema({
     name: {
+        type: String,
+        required: false
+    },
+    palabra1: {
+        type: String,
+        required: false
+    },
+    palabra2: {
         type: String,
         required: false
     },
@@ -54,6 +65,10 @@ const userSchema = new Schema({
         type: Number, // 0 user, 1 admin, 2 coach
         default: 0
     },
+    conectado: {
+        type: Number, // 0 desconectado, 1 conectado
+        default: 0
+    },
     photos: [
         {
             type: Schema.Types.ObjectId,
@@ -70,6 +85,12 @@ const userSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'Sala'
+        }
+    ],
+    amigos : [
+        {
+             type: Schema.Types.ObjectId,
+             ref: 'User'
         }
     ],
     connected: [
