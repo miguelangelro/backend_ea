@@ -20,7 +20,7 @@ export const getFaq = async (req: Request, res: Response) => {
   console.log(faqs);
   if (faqs == null)
     return res.status(404).json({ message: "Preguntas no encontradas" });
-  else return res.status(200).json(faqs);
+  else return res.status(200).json({ok: true , pregunta:faqs});
 };
 
 export const getUser = async (req: Request, res: Response) => {
