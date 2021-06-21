@@ -6,13 +6,13 @@ import {postusuario, getpostusuario, uploadfiles, getimagen} from '../controller
 import { TokenValidation } from '../middlewares/verifyToken'
 
 const router = Router();
-router.post('/',TokenValidation,adminValidation,postusuario);
+router.post('/',TokenValidation,postusuario);
 
 router.get('/',TokenValidation,getpostusuario)
 
 //Ruta para subir archivos
-router.post('/upload', TokenValidation,adminValidation, uploadfiles);
-router.get('/imagen/:userid/:img',TokenValidation, getimagen);
+router.post('/upload', TokenValidation, uploadfiles);
+router.get('/imagen/:userid/:img', getimagen);
 
 export default router;
 
