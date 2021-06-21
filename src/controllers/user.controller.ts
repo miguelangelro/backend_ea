@@ -1,13 +1,26 @@
 import { Request, response, Response } from "express";
 import User, { IUser } from "../models/user";
+import Faq, { IFaq } from "../models/faq";
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer'
+import Amigo,{ IAmigo } from "models/amigo";
+import { getParsedCommandLineOfConfigFile } from "typescript";
+
+
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find({}, { password: 0 });
   console.log(users);
   if (users == null)
     return res.status(404).json({ message: "Users not found" });
   else return res.status(200).json(users);
+};
+
+export const getFaq = async (req: Request, res: Response) => {
+  const faqs = await Faq.find({});
+  console.log(faqs);
+  if (faqs == null)
+    return res.status(404).json({ message: "Preguntas no encontradas" });
+  else return res.status(200).json({ok: true , pregunta:faqs});
 };
 
 export const getUser = async (req: Request, res: Response) => {
@@ -133,3 +146,52 @@ export const contactUs = async (req: Request, res:Response) => {
 
 
 }
+
+
+export const agregarAmigo = async (req: Request, res:Response) => {
+const {emailAmigo , idInvitador} = req.params;
+//console.log ('error',req.body.emailAmigo);
+//console.log('error',)
+const amigo = await User.findOne({"email": req.body.emailAmigo});
+
+const savedAmigo = await amigo?.save();
+//console.log ('el amigo es: '+ amigo);
+
+const elqueInvita = await User.findById(req.body.idInvitador); 
+//console.log('el que invita es', elqueInvita);
+
+const listaAmigos = elqueInvita?.amigos;
+
+//console.log('lista de amigos', listaAmigos);
+
+const repetido = listaAmigos?.find( friend => friend == amigo?.id)
+
+console.log ('el repetido es',repetido);
+
+
+
+ if (amigo != null && !repetido  ) {
+  await User.findByIdAndUpdate({_id: req.body.idInvitador},{$push: {amigos: savedAmigo}})
+   return res.status(200).json({
+     ok: true,
+     amigo: amigo
+   });
+
+ }
+else {
+  res.status (404).json({
+    ok: false
+  })
+}
+
+}
+export const dameUsuario = async (req: Request, res: Response) => {
+  const userFound = await User.findById(req.params.id);
+  if (userFound == null){
+    return res.status(404).json({ message: "User HOLI" });
+    }
+  else return res.status(200).json(userFound);
+
+}
+
+
