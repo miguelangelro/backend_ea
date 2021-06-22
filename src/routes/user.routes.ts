@@ -1,6 +1,6 @@
 import app from "app";
 import {Router} from "express"; 
-import {getAllUsers, getUser,getFaq, updatePassword, deleteUser, updateUser, contactUs, agregarAmigo, dameUsuario} from '../controllers/user.controller'
+import {getAllUsers, getUser,getFaq, updatePassword, deleteUser, updateUser, contactUs, agregarAmigo, dameUsuario, updateUserGymder, deleteUserGymder} from '../controllers/user.controller'
 import { TokenValidation } from '../middlewares/verifyToken'
 
 const router = Router();
@@ -15,6 +15,8 @@ router.put('/updateuser', TokenValidation, updateUser );
 router.post('/contactUs', contactUs);
 router.post('/addAmigo',TokenValidation, agregarAmigo);
 router.get('/dameUsuario/:id', TokenValidation, dameUsuario);
+router.put('/updateuseresc/:uid',  updateUserGymder )
+router.put('/deleteuseresc/:uid',  deleteUserGymder )
 
 
 export default router;

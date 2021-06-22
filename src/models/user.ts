@@ -20,6 +20,11 @@ export interface IUser extends Document {
     connected: number;
     socketId: string;
     provider: string;
+    escogidopormi: [string],
+    escogidopormi2:  Array<IUser>;
+    image: string;
+    descripcion: string;
+    participa: string;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 };
@@ -106,7 +111,23 @@ const userSchema = new Schema({
     provider: {
         type: String,
         required: false
-    }
+    },
+    escogidopormi2:[{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    escogidopormi: {
+        type: [String],
+    },
+    image:  {
+        type: String
+      },
+    descripcion: {
+        type: String     
+    },
+    participa: {
+        type: String     
+    },
 },
 {
     versionKey: false,
