@@ -40,7 +40,7 @@ io.on('connection', (socket:Socket) => {
 
     socket.on('new-message-g', function(data) {
         messages.push(data)
-        while(messages.length>20){
+        while(messages.length>50){
             messages.shift()
         }
         console.log(messages);
