@@ -8,7 +8,7 @@ import { getParsedCommandLineOfConfigFile } from "typescript";
 
 
 export const getAllUsers = async (req: Request, res: Response) => {
-  const users = await User.find({}, { password: 0 });
+  const users = await User.find({}, { password: 0 }).populate('escogidopormi2','-password');
   console.log(users);
   if (users == null)
     return res.status(404).json({ message: "Users not found" });
@@ -193,5 +193,77 @@ export const dameUsuario = async (req: Request, res: Response) => {
   else return res.status(200).json(userFound);
 
 }
+
+
+
+export const deleteUserGymder = async (req: Request, res: Response) => {
+  try {
+   
+    let { escogidopormi,  escogidopormi2} = req.body;
+    console.log("escogido+++++++++++++++++", escogidopormi2)
+    console.log("escogidobody+++++++++++++++++", req.body)
+
+      //no se cambia el password 
+      console.log("ID",  req.params.uid)
+      const user = await User.findById(req.params.uid);
+      const userUpdated = await User.findByIdAndUpdate(
+        req.params.uid,
+        { $pull: {  escogidopormi2: escogidopormi2 } }
+      
+      );
+      // generating token
+      console.log("userUpdated", userUpdated)
+      if (userUpdated){
+    
+      return res.status(200).json({
+        ok: true,
+        data: userUpdated      
+      });
+    }else{return res.status(404).json({ message: "User not found" }); } 
+    
+  
+  } catch (err) {
+    res.status(400).json({
+      ok: false,
+      error: err,
+    });
+  }
+};
+
+
+
+export const updateUserGymder = async (req: Request, res: Response) => {
+  try {
+   
+    let { escogidopormi , escogidopormi2} = req.body;
+    console.log("escogido", escogidopormi2)
+
+      //no se cambia el password 
+      console.log("ID",  req.params.uid)
+      const user = await User.findById(req.params.uid);
+      const userUpdated = await User.findByIdAndUpdate(
+        req.params.uid,
+        { $push: { escogidopormi: escogidopormi, escogidopormi2: escogidopormi2 } }
+      
+      );
+      // generating token
+      console.log()
+      if (userUpdated){
+    
+      return res.status(200).json({
+        ok: true,
+        data: userUpdated      
+      });
+    }else{return res.status(404).json({ message: "User not found" }); } 
+    
+  
+  } catch (err) {
+    res.status(400).json({
+      ok: false,
+      error: err,
+    });
+  }
+};
+
 
 
