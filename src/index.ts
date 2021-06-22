@@ -5,9 +5,11 @@ import app from './app';
 import { idText, isConstructorDeclaration } from 'typescript';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+
+
 var express = require('express');
 const server = createServer(app);
-import user, {IUser} from './models/user'
+import User, {IUser} from './models/user'
 const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 //const io = new Server(server);
 let userX: IUser;
@@ -16,6 +18,9 @@ var i= [];
 var nsala = 0;
 var aceptar;
 var hab;
+var sec;
+let listaAmigos: [];
+let listaAmigosEnviar: IUser[];
 
 var messages = ['bienvenidos al chat'];
 io.on('connection', (socket:Socket) => {
@@ -25,6 +30,7 @@ io.on('connection', (socket:Socket) => {
     socket.on('me-conecto', function(data) {
         userX = data;
         username= userX.username;
+        io.sockets.emit('refresh')
         id= userX._id;
         ListaUser.set(username, userX)
         console.log("El usuario es ", userX);
@@ -34,7 +40,7 @@ io.on('connection', (socket:Socket) => {
 
     socket.on('new-message-g', function(data) {
         messages.push(data)
-        while(messages.length>20){
+        while(messages.length>50){
             messages.shift()
         }
         console.log(messages);
@@ -56,7 +62,7 @@ io.on('connection', (socket:Socket) => {
         socket.join(hab);
         socket.emit('numero', data)   
     });
-    
+   
     socket.on('mensajesPriv',function (data, data2) {
         hab =  String(data2)
         io.sockets.to(hab).emit('mensajeSala', data);
@@ -66,8 +72,23 @@ io.on('connection', (socket:Socket) => {
        
     });
     
+    socket.on('miamigo', function(data){
+        console.log(userX)
+        console.log('lista amigos', userX.amigos);
+        console.log("paso por aqui")
+        socket.emit('refresh')
+    });
+    socket.on('ramigo', function(data){
+        listaAmigos = data
+        console.log(listaAmigos)
+        socket.emit('refresh2', listaAmigos)
+    });
+
+    
+    
     socket.on('disconnect', function () {
         if(username){
+            const userUpdated = User.findByIdAndUpdate(userX.id, {$set: {conectado: 0}})
             console.log('Se ha desconectado: ', username);
             ListaUser.delete(username)
             io.emit('listausuarios', Array.from(ListaUser.values()))
